@@ -40,9 +40,11 @@ def get_commands(conn):
 
         if len(data) > 0:
             print("received, looking for: " + data[:].decode("utf-8") + " in " + str(os.getcwd()))
+            found = False
             for file in os.listdir(str(os.getcwd())):
                 if file == data[:].decode("utf-8"):
                     print("found the file!")
+                    found = True
                     file_path = (os.path.abspath(file))
                     conn.send(str.encode("found " + data[:].decode("utf-8")))
                     readByte = open(file_path, "rb")
@@ -52,6 +54,9 @@ def get_commands(conn):
                     conn.close()
                     print("connection closed")
                     socket_accept()
+            if not found:
+                    print("File not Found")
+                    conn.send(str.encode("-1"))
 
 
 def main():
