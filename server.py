@@ -1,6 +1,4 @@
 import socket
-import sys
-import glob
 import os
 
 
@@ -39,6 +37,7 @@ def socket_accept():
 def get_commands(conn):
     while True:
         data = conn.recv(1024)
+
         if len(data) > 0:
             print("received, looking for: " + data[:].decode("utf-8") + " in " + str(os.getcwd()))
             for file in os.listdir(str(os.getcwd())):
@@ -46,8 +45,13 @@ def get_commands(conn):
                     print("found the file!")
                     file_path = (os.path.abspath(file))
                     conn.send(str.encode("found " + data[:].decode("utf-8")))
-                    conn.sendfile(open(file_path, "rb"))
-
+                    readByte = open(file_path, "rb")
+                    data = readByte.read()
+                    readByte.close()
+                    conn.send(data)
+                    conn.close()
+                    print("connection closed")
+                    socket_accept()
 
 
 def main():
